@@ -1,37 +1,70 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { StyleSheet, StyleSheet, TextInput, Button, View } from "react-native";
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  Button,
+  View,
+  ImageBackground,
+  ScrollView,
+} from "react-native";
 
 export default function App() {
+  const [enteredGoal, setEnteredGoal] = useState("");
+  const [courseGoals, setCourseGoals] = useState([]);
+
+  const goalInputHandler = (enteredText) => {
+    setEnteredGoal(enteredText);
+  };
+
+  const addGoalHandler = () => {
+    setCourseGoals([...courseGoals, enteredGoal]);
+  };
+
   return (
-    <View style={{ padding: 30, paddingTop: 40 }}>
-      <View
-        style={styles.screen}
-      >
+    <View style={styles.screen}>
+      <View style={styles.inputContainer}>
         <TextInput
           placeholder="Course Goal"
-          style={}
+          style={styles.input}
+          onChangeText={goalInputHandler}
+          value={enteredGoal}
         />
-        <Button title="ADD" />
+        <Button title="ADD" onPress={addGoalHandler} />
       </View>
-      <View></View>
+      <ScrollView>
+        {courseGoals.map((goal, i) => (
+          <View key={i} style={styles.listItem}>
+            <Text>{goal}</Text>
+          </View>
+        ))}
+      </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   screen: {
-    
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-    },
-    inputContainer: {
-      borderBottomColor: "black",
-      borderBottomWidth: 1,
-      padding: 10,
-      width: 220,
-    }
-
-  
-})
+    padding: 30,
+    paddingTop: 40,
+  },
+  inputContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  input: {
+    borderBottomColor: "black",
+    borderBottomWidth: 1,
+    padding: 10,
+    width: "80%",
+  },
+  listItem: {
+    padding: 10,
+    marginTop: 10,
+    backgroundColor: "#ccc",
+    borderColor: "black",
+    borderWidth: 1,
+  },
+});
